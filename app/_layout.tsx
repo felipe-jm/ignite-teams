@@ -8,7 +8,7 @@ import {
 
 import theme from "@/theme";
 import { Loading } from "@/components/Loading";
-import Groups from "@/app/Groups";
+import NewGroup from "@/app/NewGroup";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -23,7 +23,7 @@ export default function RootLayout() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Groups /> : <Loading />}
+      {fontsLoaded ? <NewGroup /> : <Loading />}
     </ThemeProvider>
   );
 }

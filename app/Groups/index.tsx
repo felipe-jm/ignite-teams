@@ -19,7 +19,7 @@ export default function Groups() {
 
   return (
     <S.Container>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <Header />
 
         <Highlight title="Turmas" subtitle="jogue com a sua turma" />
