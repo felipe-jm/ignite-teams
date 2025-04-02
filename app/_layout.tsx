@@ -1,4 +1,3 @@
-import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components";
 import {
@@ -9,6 +8,8 @@ import {
 
 import theme from "@/theme";
 import { Loading } from "@/components/Loading";
+import Groups from "@/app/Groups";
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -22,7 +23,7 @@ export default function RootLayout() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Stack /> : <Loading />}
+      {fontsLoaded ? <Groups /> : <Loading />}
     </ThemeProvider>
   );
 }

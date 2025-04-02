@@ -1,7 +1,11 @@
+import Header from "@/components/Header";
+
 import * as S from "./styles";
 
-function Groups() {
-  return <S.Container></S.Container>;
+export default function Groups() {
+  return (
+    <S.Container>
+      <Header />
+    </S.Container>
+  );
 }
-
-export default Groups;
