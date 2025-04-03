@@ -1,25 +1,20 @@
-import { TouchableOpacityProps } from "react-native";
-
-import Button from "../Button";
+import ButtonIcon from "@/components/ButtonIcon";
 
 import * as S from "./styles";
 
-type PlayerCardProps = TouchableOpacityProps & {
-  readonly name: string;
-  readonly onRemove: () => void;
+type PlayerCardProps = {
+  name: string;
+  onRemove: () => void;
 };
 
-export default function PlayerCard({
-  name,
-  onRemove,
-  ...rest
-}: PlayerCardProps) {
+export default function PlayerCard({ name, onRemove }: PlayerCardProps) {
   return (
-    <S.Container {...rest}>
-      <S.Icon />
-      <S.Title>{name}</S.Title>
+    <S.Container>
+      <S.Icon name="person" />
 
-      <Button title="Remover" type="SECONDARY" />
+      <S.Name>{name}</S.Name>
+
+      <ButtonIcon icon="close" type="SECONDARY" onPress={onRemove} />
     </S.Container>
   );
 }
