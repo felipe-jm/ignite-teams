@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { FlatList } from "react-native";
+import { useState, useCallback, useEffect } from "react";
+import { FlatList, Alert } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Header } from "@/components/Header";
 import { Highlight } from "@/components/Highlight";
@@ -10,25 +10,77 @@ import { Input } from "@/components/Input";
 import { Filter } from "@/components/Filter";
 import { PlayerCard } from "@/components/PlayerCard";
 
+import { addPlayerToGroup } from "@/storage/player/add-to-group";
+
+import { AppError } from "@/utils/app-error";
+
+import { fetchPlayersByGroup } from "@/storage/player/fetch-plays-by-group";
+import { fetchPlayersByGroupAndTeam } from "@/storage/player/fetch-plays-by-group-and-team";
+
+import { Player } from "@/@types/player";
+
 import * as S from "./styles";
 
 export default function Players() {
   const { group } = useLocalSearchParams<{ group: string }>();
 
+  const [playerName, setPlayerName] = useState("");
+
   const [team, setTeam] = useState<string>("Time A");
-  const [players, setPlayers] = useState<string[]>([
-    "Felipe",
-    "Luís",
-    "Will",
-    "Arthur",
-  ]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   const numberOfPlayers = players.length;
 
   const emptyList = numberOfPlayers === 0;
 
-  function handlePlayerRemove(name: string) {
-    setPlayers((prevState) => prevState.filter((player) => player !== name));
+  function handlePlayerRemove(player: Player) {
+    setPlayers((prevState) =>
+      prevState.filter((playerItem) => playerItem.name !== player.name)
+    );
+  }
+
+  const fetchPlayers = useCallback(async () => {
+    const players = await fetchPlayersByGroup(group);
+    setPlayers(players);
+  }, [group]);
+
+  useEffect(() => {
+    fetchPlayers();
+  }, [fetchPlayers]);
+
+  async function fetchPlayersByTeam(team: string) {
+    try {
+      const players = await fetchPlayersByGroupAndTeam(group, team);
+      setPlayers(players);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Novo jogador", "Não foi possível carregar os jogadores.");
+    }
+  }
+
+  useEffect(() => {
+    fetchPlayersByTeam(team);
+  }, [team]);
+
+  async function handleAddPlayer() {
+    if (playerName.trim().length === 0) {
+      return Alert.alert("Novo jogador", "Informe o nome do jogador.");
+    }
+
+    try {
+      await addPlayerToGroup(group, playerName, team);
+
+      fetchPlayersByTeam(team);
+
+      setPlayerName("");
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Novo jogador", error.message);
+      } else {
+        console.log(error);
+        Alert.alert("Novo jogador", "Não foi possível adicionar o jogador.");
+      }
+    }
   }
 
   return (
@@ -38,9 +90,14 @@ export default function Players() {
       <Highlight title={group} subtitle="adicione a galera e separe os times" />
 
       <S.Form>
-        <Input placeholder="Nome da pessoa" autoCorrect={false} />
+        <Input
+          placeholder="Nome da pessoa"
+          autoCorrect={false}
+          onChangeText={setPlayerName}
+          value={playerName}
+        />
 
-        <ButtonIcon icon="add" type="PRIMARY" />
+        <ButtonIcon icon="add" type="PRIMARY" onPress={handleAddPlayer} />
       </S.Form>
 
       <S.HeaderList>
@@ -63,9 +120,12 @@ export default function Players() {
 
       <FlatList
         data={players}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
-          <PlayerCard name={item} onRemove={() => handlePlayerRemove(item)} />
+          <PlayerCard
+            name={item.name}
+            onRemove={() => handlePlayerRemove(item)}
+          />
         )}
         ListEmptyComponent={<EmptyList message="Não há pessoas nesse time" />}
         showsVerticalScrollIndicator={false}
