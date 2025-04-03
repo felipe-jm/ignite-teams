@@ -1,24 +1,22 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { FlatList } from "react-native";
 import { useRouter } from "expo-router";
 
-import Header from "@/components/Header";
-import Highlight from "@/components/Highlight";
-import Button from "@/components/Button";
-import GroupCard from "@/components/GroupCard";
+import { Header } from "@/components/Header";
+import { Highlight } from "@/components/Highlight";
+import { Button } from "@/components/Button";
+import { GroupCard } from "@/components/GroupCard";
 import { EmptyList } from "@/components/EmptyList";
 
 import * as S from "./styles";
 
+import { fetchGroups } from "@/storage/group/fetch";
+
 export default function Groups() {
   const router = useRouter();
 
-  const [groups, setGroups] = useState<string[]>([
-    "Turma 1",
-    "Turma 2",
-    "Turma 3",
-  ]);
+  const [groups, setGroups] = useState<string[]>([]);
 
   function handleNewGroup() {
     router.navigate("/new-group");
@@ -30,6 +28,15 @@ export default function Groups() {
       params: { group },
     });
   }
+
+  const fetchAllGroups = useCallback(async () => {
+    const groups = await fetchGroups();
+    setGroups(groups);
+  }, []);
+
+  useEffect(() => {
+    fetchAllGroups();
+  }, []);
 
   return (
     <S.Container>
@@ -44,6 +51,7 @@ export default function Groups() {
           <GroupCard title={item} onPress={() => handleOpenGroup(item)} />
         )}
         ListEmptyComponent={<EmptyList message="Nenhuma turma encontrada" />}
+        contentContainerStyle={groups.length === 0 && { flex: 1 }}
       />
 
       <Button title="Criar nova turma" onPress={handleNewGroup} />

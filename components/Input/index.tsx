@@ -5,7 +5,7 @@ import * as S from "./styles";
 
 type InputProps = TextInputProps;
 
-export default function Input({ ...rest }: InputProps) {
+export function Input({ ...rest }: InputProps) {
   const { COLORS } = useTheme();
 
   return <S.Container placeholderTextColor={COLORS.GRAY_300} {...rest} />;

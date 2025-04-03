@@ -7,11 +7,7 @@ type ButtonProps = TouchableOpacityProps & {
   readonly type?: S.ButtonTypeStyleProps;
 };
 
-export default function Button({
-  title,
-  type = "PRIMARY",
-  ...rest
-}: ButtonProps) {
+export function Button({ title, type = "PRIMARY", ...rest }: ButtonProps) {
   return (
     <S.Container type={type} {...rest}>
       <S.Title>{title}</S.Title>

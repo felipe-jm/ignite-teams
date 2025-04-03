@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { FlatList } from "react-native";
 import { useLocalSearchParams } from "expo-router";
-import Header from "@/components/Header";
-import Highlight from "@/components/Highlight";
-import Button from "@/components/Button";
+import { Header } from "@/components/Header";
+import { Highlight } from "@/components/Highlight";
+import { Button } from "@/components/Button";
 import { EmptyList } from "@/components/EmptyList";
-import ButtonIcon from "@/components/ButtonIcon";
-import Input from "@/components/Input";
-import Filter from "@/components/Filter";
-import PlayerCard from "@/components/PlayerCard";
+import { ButtonIcon } from "@/components/ButtonIcon";
+import { Input } from "@/components/Input";
+import { Filter } from "@/components/Filter";
+import { PlayerCard } from "@/components/PlayerCard";
 
 import * as S from "./styles";
 

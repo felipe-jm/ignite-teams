@@ -8,7 +8,7 @@ type ButtonIconProps = TouchableOpacityProps & {
   readonly type?: S.ButtonIconTypeStyleProps;
 };
 
-export default function ButtonIcon({
+export function ButtonIcon({
   icon,
   type = "PRIMARY",
   ...rest

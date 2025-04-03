@@ -1,4 +1,4 @@
-import ButtonIcon from "@/components/ButtonIcon";
+import { ButtonIcon } from "@/components/ButtonIcon";
 
 import * as S from "./styles";
 
@@ -7,7 +7,7 @@ type PlayerCardProps = {
   onRemove: () => void;
 };
 
-export default function PlayerCard({ name, onRemove }: PlayerCardProps) {
+export function PlayerCard({ name, onRemove }: PlayerCardProps) {
   return (
     <S.Container>
       <S.Icon name="person" />

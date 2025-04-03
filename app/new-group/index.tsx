@@ -2,19 +2,22 @@ import { useState } from "react";
 
 import { useRouter } from "expo-router";
 
-import Header from "@/components/Header";
-import Highlight from "@/components/Highlight";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
+import { Header } from "@/components/Header";
+import { Highlight } from "@/components/Highlight";
+import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
 
 import * as S from "./styles";
+
+import { createGroup } from "@/storage/group/create";
 
 export default function NewGroup() {
   const router = useRouter();
 
   const [group, setGroup] = useState("");
 
-  function handleNewGroup() {
+  async function handleNewGroup() {
+    await createGroup(group);
     router.navigate({
       pathname: "/players",
       params: { group },

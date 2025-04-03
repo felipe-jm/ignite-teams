@@ -7,7 +7,7 @@ type HeaderProps = {
   readonly showBackButton?: boolean;
 };
 
-export default function Header({ showBackButton = false }: HeaderProps) {
+export function Header({ showBackButton = false }: HeaderProps) {
   const router = useRouter();
 
   function handleGoBack() {
