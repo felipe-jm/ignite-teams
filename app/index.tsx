@@ -1,6 +1,5 @@
-import React from "react";
-import Groups from "./Groups";
+import { Redirect } from "expo-router";
 
-export default function App() {
-  return <Groups />;
+export default function Index() {
+  return <Redirect href="/groups" />;
 }

@@ -1,5 +1,6 @@
 import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components";
+import { Stack } from "expo-router";
 import {
   useFonts,
   Roboto_400Regular,
@@ -8,7 +9,6 @@ import {
 
 import theme from "@/theme";
 import { Loading } from "@/components/Loading";
-import Players from "@/app/Players";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -23,7 +23,20 @@ export default function RootLayout() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <Players /> : <Loading />}
+      {fontsLoaded ? (
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="groups/index" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="new-group/index"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="players/index" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      ) : (
+        <Loading />
+      )}
     </ThemeProvider>
   );
 }
