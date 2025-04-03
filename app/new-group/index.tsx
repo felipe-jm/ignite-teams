@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Alert } from "react-native";
 
 import { useRouter } from "expo-router";
 
@@ -11,17 +12,33 @@ import * as S from "./styles";
 
 import { createGroup } from "@/storage/group/create";
 
+import { AppError } from "@/utils/app-error";
+
 export default function NewGroup() {
   const router = useRouter();
 
   const [group, setGroup] = useState("");
 
   async function handleNewGroup() {
-    await createGroup(group);
-    router.navigate({
-      pathname: "/players",
-      params: { group },
-    });
+    try {
+      if (group.trim().length === 0) {
+        throw new AppError("Nome do grupo não pode ser vazio.");
+      }
+
+      await createGroup(group);
+
+      router.navigate({
+        pathname: "/players",
+        params: { group },
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert("Novo grupo", error.message);
+      } else {
+        console.log(error);
+        Alert.alert("Novo grupo", "Não foi possível criar um novo grupo.");
+      }
+    }
   }
 
   return (
