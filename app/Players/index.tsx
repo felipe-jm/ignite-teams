@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
-import { FlatList, Alert } from "react-native";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { FlatList, Alert, TextInput } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Header } from "@/components/Header";
 import { Highlight } from "@/components/Highlight";
@@ -23,6 +23,8 @@ import * as S from "./styles";
 
 export default function Players() {
   const { group } = useLocalSearchParams<{ group: string }>();
+
+  const playerNameInputRef = useRef<TextInput>(null);
 
   const [playerName, setPlayerName] = useState("");
 
@@ -48,7 +50,7 @@ export default function Players() {
     fetchPlayers();
   }, [fetchPlayers]);
 
-  async function fetchPlayersByTeam(team: string) {
+  const fetchPlayersByTeam = useCallback(async () => {
     try {
       const players = await fetchPlayersByGroupAndTeam(group, team);
       setPlayers(players);
@@ -56,11 +58,11 @@ export default function Players() {
       console.log(error);
       Alert.alert("Novo jogador", "Não foi possível carregar os jogadores.");
     }
-  }
+  }, [group, team]);
 
   useEffect(() => {
-    fetchPlayersByTeam(team);
-  }, [team]);
+    fetchPlayersByTeam();
+  }, [fetchPlayersByTeam]);
 
   async function handleAddPlayer() {
     if (playerName.trim().length === 0) {
@@ -70,9 +72,10 @@ export default function Players() {
     try {
       await addPlayerToGroup(group, playerName, team);
 
-      fetchPlayersByTeam(team);
+      playerNameInputRef.current?.blur();
 
       setPlayerName("");
+      fetchPlayersByTeam();
     } catch (error) {
       if (error instanceof AppError) {
         Alert.alert("Novo jogador", error.message);
@@ -91,10 +94,13 @@ export default function Players() {
 
       <S.Form>
         <Input
+          inputRef={playerNameInputRef}
           placeholder="Nome da pessoa"
           autoCorrect={false}
           onChangeText={setPlayerName}
           value={playerName}
+          onSubmitEditing={handleAddPlayer}
+          returnKeyType="done"
         />
 
         <ButtonIcon icon="add" type="PRIMARY" onPress={handleAddPlayer} />
