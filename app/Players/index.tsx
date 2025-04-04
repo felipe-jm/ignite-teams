@@ -9,13 +9,14 @@ import { ButtonIcon } from "@/components/ButtonIcon";
 import { Input } from "@/components/Input";
 import { Filter } from "@/components/Filter";
 import { PlayerCard } from "@/components/PlayerCard";
+import { Loading } from "@/components/Loading";
 
 import { addPlayerToGroup } from "@/storage/player/add-to-group";
 
 import { AppError } from "@/utils/app-error";
 
-import { fetchPlayersByGroup } from "@/storage/player/fetch-plays-by-group";
-import { fetchPlayersByGroupAndTeam } from "@/storage/player/fetch-plays-by-group-and-team";
+import { fetchPlayersByGroup } from "@/storage/player/fetch-players-by-group";
+import { fetchPlayersByGroupAndTeam } from "@/storage/player/fetch-players-by-group-and-team";
 import { removePlayerByGroup } from "@/storage/player/remove-by-group";
 import { removeGroup } from "@/storage/group/remove";
 
@@ -34,6 +35,8 @@ export default function Players() {
 
   const [team, setTeam] = useState<string>("Time A");
   const [players, setPlayers] = useState<Player[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const numberOfPlayers = players.length;
 
@@ -55,11 +58,14 @@ export default function Players() {
 
   const fetchPlayersByTeam = useCallback(async () => {
     try {
+      setIsLoading(true);
       const players = await fetchPlayersByGroupAndTeam(group, team);
       setPlayers(players);
     } catch (error) {
       console.log(error);
       Alert.alert("Novo jogador", "Não foi possível carregar os jogadores.");
+    } finally {
+      setIsLoading(false);
     }
   }, [group, team]);
 
@@ -139,19 +145,25 @@ export default function Players() {
       </S.Form>
 
       <S.HeaderList>
-        <FlatList
-          data={["Time A", "Time B"]}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => (
-            <Filter
-              title={item}
-              isActive={item === team}
-              onPress={() => setTeam(item)}
-            />
-          )}
-          horizontal
-          ListEmptyComponent={<EmptyList message="Nenhum jogador adicionado" />}
-        />
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            data={["Time A", "Time B"]}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <Filter
+                title={item}
+                isActive={item === team}
+                onPress={() => setTeam(item)}
+              />
+            )}
+            horizontal
+            ListEmptyComponent={
+              <EmptyList message="Nenhum jogador adicionado" />
+            }
+          />
+        )}
 
         <S.NumberOfPlayers>{numberOfPlayers}</S.NumberOfPlayers>
       </S.HeaderList>

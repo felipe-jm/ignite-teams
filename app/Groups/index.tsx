@@ -12,11 +12,14 @@ import { EmptyList } from "@/components/EmptyList";
 import * as S from "./styles";
 
 import { fetchGroups } from "@/storage/group/fetch";
+import { Loading } from "@/components/Loading";
 
 export default function Groups() {
   const router = useRouter();
 
   const [groups, setGroups] = useState<string[]>([]);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   function handleNewGroup() {
     router.navigate("/new-group");
@@ -30,8 +33,15 @@ export default function Groups() {
   }
 
   const fetchAllGroups = useCallback(async () => {
-    const groups = await fetchGroups();
-    setGroups(groups);
+    try {
+      setIsLoading(true);
+      const groups = await fetchGroups();
+      setGroups(groups);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -44,15 +54,19 @@ export default function Groups() {
 
       <Highlight title="Turmas" subtitle="jogue com a sua turma" />
 
-      <FlatList
-        data={groups}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <GroupCard title={item} onPress={() => handleOpenGroup(item)} />
-        )}
-        ListEmptyComponent={<EmptyList message="Nenhuma turma encontrada" />}
-        contentContainerStyle={groups.length === 0 && { flex: 1 }}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          data={groups}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => (
+            <GroupCard title={item} onPress={() => handleOpenGroup(item)} />
+          )}
+          ListEmptyComponent={<EmptyList message="Nenhuma turma encontrada" />}
+          contentContainerStyle={groups.length === 0 && { flex: 1 }}
+        />
+      )}
 
       <Button title="Criar nova turma" onPress={handleNewGroup} />
     </S.Container>

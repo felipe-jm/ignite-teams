@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { PLAYER_COLLECTION } from "../config";
 
-import { fetchPlayersByGroup } from "./fetch-plays-by-group";
+import { fetchPlayersByGroup } from "./fetch-players-by-group";
 
 import { AppError } from "@/utils/app-error";
 import { Player } from "@/@types/player";

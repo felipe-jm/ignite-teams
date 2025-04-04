@@ -3,6 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GROUP_COLLECTION, PLAYER_COLLECTION } from "@/storage/config";
 
 import { fetchGroups } from "./fetch";
+import { fetchPlayersByGroup } from "../player/fetch-players-by-group";
+import { normalizeGroupName } from "@/utils/normalize-group-name";
 
 export async function removeGroup(group: string) {
   try {
@@ -17,7 +19,13 @@ export async function removeGroup(group: string) {
       JSON.stringify(filteredGroups)
     );
 
-    await AsyncStorage.removeItem(`${PLAYER_COLLECTION}-${group}`);
+    const players = await fetchPlayersByGroup(group);
+
+    const normalizedGroupName = normalizeGroupName(group);
+
+    await AsyncStorage.removeItem(
+      `${PLAYER_COLLECTION}-${normalizedGroupName}`
+    );
   } catch (error) {
     throw error;
   }

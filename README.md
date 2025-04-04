@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
+# Ignite Teams
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Uma aplicação mobile para gerenciamento de times e grupos de jogos, desenvolvida com React Native e Expo.
 
-## Get started
+## 📱 Sobre o projeto
 
-1. Install dependencies
+Ignite Teams é uma aplicação que permite criar e gerenciar equipes para jogos, organizando jogadores por turmas. Com esta aplicação, você pode:
 
-   ```bash
-   npm install
-   ```
+- Criar novas turmas/grupos
+- Listar todas as turmas cadastradas
+- Acessar detalhes de cada turma
+- Adicionar jogadores às turmas
 
-2. Start the app
+## 🚀 Tecnologias utilizadas
 
-   ```bash
-    npx expo start
-   ```
+- [React Native](https://reactnative.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Expo](https://expo.dev/)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+- [Styled Components](https://styled-components.com/)
+- [AsyncStorage](https://react-native-async-storage.github.io/async-storage/)
 
-In the output, you'll find options to open the app in a
+## 📋 Pré-requisitos
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Node.js](https://nodejs.org/en/) (recomendado v18 ou superior)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/)
+- Emulador Android/iOS ou dispositivo físico
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🔧 Instalação e execução
 
-## Get a fresh project
-
-When you're ready, run:
+1. Clone o repositório
 
 ```bash
-npm run reset-project
+git clone [url-do-repositorio]
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Acesse a pasta do projeto
 
-## Learn more
+```bash
+cd ignite-teams
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Instale as dependências
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npm install
+# ou
+yarn install
+```
 
-## Join the community
+4. Execute o projeto
 
-Join our community of developers creating universal apps.
+```bash
+npx expo
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+5. Após iniciar, você pode:
+   - Pressionar `a` para abrir no emulador Android
+   - Pressionar `i` para abrir no emulador iOS
+   - Escanear o QR Code com o aplicativo Expo Go no seu dispositivo físico
+
+## 📱 Executando em Dispositivos Específicos
+
+Para executar diretamente em um dispositivo específico:
+
+```bash
+# Android
+npm run android
+# ou
+yarn android
+
+# iOS
+npm run ios
+# ou
+yarn ios
+```
+
+## 📚 Estrutura do Projeto
+
+```
+ignite-teams/
+├── app/                   # Rotas e páginas da aplicação
+│   ├── groups/            # Tela de listagem de grupos
+│   ├── new-group/         # Tela de criação de novo grupo
+│   ├── players/           # Tela de gerenciamento de jogadores
+│   └── _layout.tsx        # Layout comum da aplicação
+├── components/            # Componentes reutilizáveis
+├── storage/               # Lógica de armazenamento local
+├── theme/                 # Configuração de temas e estilos
+```
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+Desenvolvido durante o MBA de React Native da Rocketseat

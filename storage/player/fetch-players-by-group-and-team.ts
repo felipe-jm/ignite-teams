@@ -1,4 +1,4 @@
-import { fetchPlayersByGroup } from "./fetch-plays-by-group";
+import { fetchPlayersByGroup } from "./fetch-players-by-group";
 import { Player } from "@/@types/player";
 
 export async function fetchPlayersByGroupAndTeam(group: string, team: string) {
