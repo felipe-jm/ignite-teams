@@ -102,4 +102,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-Desenvolvido durante o MBA de React Native da Rocketseat
+Desenvolvido durante o MBA de desenvolvimento Full Stack da Rocketseat
