@@ -16,6 +16,7 @@ import { AppError } from "@/utils/app-error";
 
 import { fetchPlayersByGroup } from "@/storage/player/fetch-plays-by-group";
 import { fetchPlayersByGroupAndTeam } from "@/storage/player/fetch-plays-by-group-and-team";
+import { removePlayerByGroup } from "@/storage/player/remove-by-group";
 
 import { Player } from "@/@types/player";
 
@@ -35,15 +36,14 @@ export default function Players() {
 
   const emptyList = numberOfPlayers === 0;
 
-  function handlePlayerRemove(player: Player) {
-    setPlayers((prevState) =>
-      prevState.filter((playerItem) => playerItem.name !== player.name)
-    );
-  }
-
   const fetchPlayers = useCallback(async () => {
-    const players = await fetchPlayersByGroup(group);
-    setPlayers(players);
+    try {
+      const players = await fetchPlayersByGroup(group);
+      setPlayers(players);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Novo jogador", "Não foi possível carregar os jogadores.");
+    }
   }, [group]);
 
   useEffect(() => {
@@ -83,6 +83,16 @@ export default function Players() {
         console.log(error);
         Alert.alert("Novo jogador", "Não foi possível adicionar o jogador.");
       }
+    }
+  }
+
+  async function handleRemovePlayer(player: Player) {
+    try {
+      await removePlayerByGroup(player.name, group);
+      fetchPlayersByTeam();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Remover jogador", "Não foi possível remover o jogador.");
     }
   }
 
@@ -130,7 +140,7 @@ export default function Players() {
         renderItem={({ item }) => (
           <PlayerCard
             name={item.name}
-            onRemove={() => handlePlayerRemove(item)}
+            onRemove={() => handleRemovePlayer(item)}
           />
         )}
         ListEmptyComponent={<EmptyList message="Não há pessoas nesse time" />}
