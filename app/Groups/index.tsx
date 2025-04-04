@@ -12,7 +12,6 @@ import { EmptyList } from "@/components/EmptyList";
 import * as S from "./styles";
 
 import { fetchGroups } from "@/storage/group/fetch";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Groups() {
   const router = useRouter();
@@ -38,19 +37,6 @@ export default function Groups() {
   useEffect(() => {
     fetchAllGroups();
   }, []);
-
-  // async function handleClearAsyncStorage() {
-  //   try {
-  //     await AsyncStorage.clear();
-  //     setGroups([]);
-  //   } catch (error) {
-  //     console.error("Error clearing AsyncStorage:", error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   handleClearAsyncStorage();
-  // }, []);
 
   return (
     <S.Container>

@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { FlatList, Alert, TextInput } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Header } from "@/components/Header";
 import { Highlight } from "@/components/Highlight";
 import { Button } from "@/components/Button";
@@ -17,12 +17,15 @@ import { AppError } from "@/utils/app-error";
 import { fetchPlayersByGroup } from "@/storage/player/fetch-plays-by-group";
 import { fetchPlayersByGroupAndTeam } from "@/storage/player/fetch-plays-by-group-and-team";
 import { removePlayerByGroup } from "@/storage/player/remove-by-group";
+import { removeGroup } from "@/storage/group/remove";
 
 import { Player } from "@/@types/player";
 
 import * as S from "./styles";
 
 export default function Players() {
+  const router = useRouter();
+
   const { group } = useLocalSearchParams<{ group: string }>();
 
   const playerNameInputRef = useRef<TextInput>(null);
@@ -96,6 +99,25 @@ export default function Players() {
     }
   }
 
+  async function handleRemoveGroup() {
+    Alert.alert("Remover turma", "Tem certeza que deseja remover a turma?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Remover",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            await removeGroup(group);
+            router.replace("/groups");
+          } catch (error) {
+            console.log(error);
+            Alert.alert("Remover turma", "Não foi possível remover a turma.");
+          }
+        },
+      },
+    ]);
+  }
+
   return (
     <S.Container>
       <Header showBackButton />
@@ -151,7 +173,11 @@ export default function Players() {
         ]}
       />
 
-      <Button title="Remover turma" type="SECONDARY" />
+      <Button
+        title="Remover turma"
+        type="SECONDARY"
+        onPress={handleRemoveGroup}
+      />
     </S.Container>
   );
 }
