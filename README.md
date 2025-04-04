@@ -2,6 +2,12 @@
 
 Uma aplicação mobile para gerenciamento de times e grupos de jogos, desenvolvida com React Native e Expo.
 
+## 📱 Demonstração
+
+Veja abaixo uma demonstração da aplicação em funcionamento:
+
+![Demonstração da aplicação](./recording.mp4)
+
 ## 📱 Sobre o projeto
 
 Ignite Teams é uma aplicação que permite criar e gerenciar equipes para jogos, organizando jogadores por turmas. Com esta aplicação, você pode:
