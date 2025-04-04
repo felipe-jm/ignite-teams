@@ -6,7 +6,7 @@ Uma aplicação mobile para gerenciamento de times e grupos de jogos, desenvolvi
 
 Veja abaixo uma demonstração da aplicação em funcionamento:
 
-![Demonstração da aplicação](./recording.mp4)
+![Demonstração da aplicação](https://github.com/user/ignite-teams/assets/video/demo.mp4)
 
 ## 📱 Sobre o projeto
 
